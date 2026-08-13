@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>نظام إدارة المحل | الإعدادات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== نفس الـ Styles السابقة مع إضافات ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #0b0b0b;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #111;
+            border-radius: 32px;
+            padding: 28px 30px 40px;
+            border: 1px solid #c9a84c30;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .dashboard-grid {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        .sidebar {
+            flex: 0 0 210px;
+            background: #1b1b1b;
+            border-radius: 28px;
+            padding: 28px 16px;
+            border: 1px solid #2f2f2f;
+            height: fit-content;
+            box-shadow: inset 0 0 10px #00000055;
+        }
+
+        .sidebar .logo-small {
+            text-align: center;
+            border-bottom: 1px solid #2a2a2a;
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+        }
+
+        .sidebar .logo-small i {
+            color: #c9a84c;
+            font-size: 32px;
+            background: #252525;
+            padding: 12px;
+            border-radius: 18px;
+        }
+
+        .sidebar .logo-small h2 {
+            color: #ece6de;
+            font-weight: 300;
+            font-size: 18px;
+            margin-top: 8px;
+        }
+
+        .sidebar .logo-small h2 span {
+            color: #c9a84c;
+            font-weight: 600;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav ul li {
+            margin-bottom: 6px;
+        }
+
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 18px;
+            color: #b5aea4;
+            text-decoration: none;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 400;
+            transition: 0.2s;
+        }
+
+        .sidebar nav ul li a i {
+            width: 22px;
+            color: #8f877c;
+            transition: 0.2s;
+        }
+
+        .sidebar nav ul li a:hover,
+        .sidebar nav ul li a.active {
+            background: #2a2a2a;
+            color: #f5efe7;
+        }
+
+        .sidebar nav ul li a:hover i,
+        .sidebar nav ul li a.active i {
+            color: #c9a84c;
+        }
+
+        .sidebar .logout-btn {
+            margin-top: 40px;
+            border-top: 1px solid #2a2a2a;
+            padding-top: 20px;
+        }
+
+        .sidebar .logout-btn a {
+            color: #b18f4a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .sidebar .logout-btn a:hover {
+            background: #2a1f1f;
+            color: #dbb95a;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .main-header h2 {
+            color: #f0ebe5;
+            font-weight: 300;
+            font-size: 26px;
+        }
+
+        .main-header h2 i {
+            color: #c9a84c;
+            margin-left: 12px;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-gold {
+            background: linear-gradient(145deg, #c9a84c, #b08d3a);
+            color: #0b0b0b;
+            box-shadow: 0 4px 0 #7a632b;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(145deg, #dbb95a, #b8933a);
+            box-shadow: 0 6px 0 #7a632b;
+        }
+
+        .btn-gold:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #7a632b;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #c9a84c60;
+            color: #c9a84c;
+        }
+
+        .btn-outline:hover {
+            background: #c9a84c20;
+            border-color: #c9a84c;
+        }
+
+        .btn-secondary {
+            background: #2a2a2a;
+            color: #cfc8be;
+            border: 1px solid #3a3a3a;
+        }
+
+        .btn-secondary:hover {
+            background: #353535;
+        }
+
+        .tab-switch {
+            display: flex;
+            gap: 4px;
+            background: #1b1b1b;
+            border-radius: 60px;
+            padding: 4px;
+            border: 1px solid #2a2a2a;
+            margin-bottom: 28px;
+            width: fit-content;
+            flex-wrap: wrap;
+        }
+
+        .tab-switch button {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 40px;
+            background: transparent;
+            color: #b5aea4;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tab-switch button.active {
+            background: #c9a84c;
+            color: #0b0b0b;
+            box-shadow: 0 4px 12px #c9a84c40;
+        }
+
+        .tab-switch button:hover:not(.active) {
+            color: #f0ebe5;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .report-card {
+            background: #1b1b1b;
+            padding: 24px 20px;
+            border-radius: 24px;
+            border: 1px solid #2a2a2a;
+            transition: 0.2s;
+        }
+
+        .report-card:hover {
+            border-color: #c9a84c70;
+            background: #1f1f1f;
+        }
+
+        .report-card .report-icon {
+            font-size: 32px;
+            color: #c9a84c;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .report-card .report-number {
+            font-size: 32px;
+            font-weight: 600;
+            color: #f0ebe5;
+            letter-spacing: 1px;
+        }
+
+        .report-card .report-label {
+            color: #9a938a;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .report-card .report-change {
+            font-size: 13px;
+            margin-top: 8px;
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 40px;
+        }
+
+        .report-card .report-change.up {
+            background: #1f3322;
+            color: #8fc99a;
+        }
+
+        .report-card .report-change.down {
+            background: #3d1f1f;
+            color: #e68a7a;
+        }
+
+        .chart-container {
+            background: #161616;
+            border-radius: 28px;
+            padding: 24px 22px;
+            border: 1px solid #252525;
+            margin-bottom: 28px;
+        }
+
+        .chart-container h3 {
+            color: #e6dccf;
+            font-weight: 300;
+            font-size: 18px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chart-container h3 i {
+            color: #c9a84c;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 16px;
+            height: 180px;
+            padding-top: 10px;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .bar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 40px;
+        }
+
+        .bar-item .bar {
+            width: 36px;
+            background: linear-gradient(180deg, #c9a84c, #b08d3a);
+            border-radius: 8px 8px 0 0;
+            min-height: 8px;
+            transition: 0.3s;
+        }
+
+        .bar-item .bar-label {
+            color: #9a938a;
+            font-size: 12px;
+        }
+
+        .bar-item .bar-value {
+            color: #c9a84c;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .table-wrapper {
+            background: #161616;
+            border-radius: 28px;
+            padding: 20px 18px;
+            border: 1px solid #252525;
+            overflow-x: auto;
+            margin-bottom: 28px;
+        }
+
+        .table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #d6cec2;
+            font-size: 14px;
+            min-width: 500px;
+        }
+
+        .table-wrapper th {
+            text-align: right;
+            padding: 14px 12px 10px 12px;
+            border-bottom: 1px solid #2a2a2a;
+            color: #b8aea1;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .table-wrapper td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #222;
+            vertical-align: middle;
+        }
+
+        .table-wrapper tr:hover td {
+            background: #1f1f1f;
+        }
+
+        .settings-section {
+            background: #161616;
+            border-radius: 28px;
+            padding: 24px 22px;
+            border: 1px solid #252525;
+        }
+
+        .settings-section h3 {
+            color: #e6dccf;
+            font-weight: 300;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-section h3 i {
+            color: #c9a84c;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 24px;
+        }
+
+        .settings-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .settings-group label {
+            color: #cfc8be;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .settings-group input,
+        .settings-group select {
+            background: #252525;
+            border: 1px solid #3a3a3a;
+            border-radius: 60px;
+            padding: 12px 18px;
+            color: #f0ebe5;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .settings-group input:focus,
+        .settings-group select:focus {
+            border-color: #c9a84c;
+            box-shadow: 0 0 12px #c9a84c30;
+        }
+
+        .settings-group input::placeholder {
+            color: #6b6560;
+        }
+
+        .settings-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .settings-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        .user-list {
+            margin-top: 20px;
+            border-top: 1px solid #2a2a2a;
+            padding-top: 20px;
+        }
+
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #1f1f1f;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .user-item .user-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .user-item .user-info i {
+            color: #c9a84c;
+            font-size: 20px;
+        }
+
+        .user-item .user-info span {
+            color: #d6cec2;
+        }
+
+        .user-item .user-info .user-role {
+            color: #9a938a;
+            font-size: 13px;
+        }
+
+        .user-item .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .user-item .user-actions .btn-sm {
+            padding: 6px 14px;
+            border-radius: 40px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .user-item .user-actions .btn-sm.edit {
+            background: #2f2a1f;
+            color: #c9a84c;
+        }
+
+        .user-item .user-actions .btn-sm.edit:hover {
+            background: #3f382a;
+        }
+
+        .user-item .user-actions .btn-sm.delete {
+            background: #3d1f1f;
+            color: #e06868;
+        }
+
+        .user-item .user-actions .btn-sm.delete:hover {
+            background: #4d2a2a;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #1a1a1a;
+            border-radius: 32px;
+            padding: 36px 32px;
+            max-width: 560px;
+            width: 100%;
+            border: 1px solid #c9a84c40;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+            animation: fadeUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-box h3 {
+            color: #f0ebe5;
+            font-weight: 300;
+            font-size: 24px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-box h3 i {
+            color: #c9a84c;
+        }
+
+        .modal-close {
+            margin-right: auto;
+            background: none;
+            border: none;
+            color: #8f877c;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #e06868;
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            color: #cfc8be;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            background: #252525;
+            border: 1px solid #3a3a3a;
+            border-radius: 60px;
+            padding: 12px 18px;
+            color: #f0ebe5;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #c9a84c;
+            box-shadow: 0 0 12px #c9a84c30;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .modal-actions .btn {
+            padding: 12px 32px;
+        }
+
+        @media (max-width: 920px) {
+            .sidebar {
+                flex: 1 1 100%;
+            }
+            .dashboard-grid {
+                flex-direction: column;
+            }
+            .tab-switch {
+                width: 100%;
+                justify-content: center;
+            }
+            .tab-switch button {
+                flex: 1;
+                text-align: center;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            .reports-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .app-wrapper {
+                padding: 16px;
+            }
+            .main-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+            .bar-chart {
+                height: 140px;
+                gap: 10px;
+            }
+            .bar-item .bar {
+                width: 28px;
+            }
+            .user-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .user-item .user-actions {
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <div class="dashboard-grid">
+
+            <!-- القائمة الجانبية -->
+            <aside class="sidebar">
+                <div class="logo-small">
+                    <i class="fas fa-crown"></i>
+                    <h2><span>أزياء</span> الذهب</h2>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-chart-pie"></i> لوحة التحكم</a></li>
+                        <li><a href="products.html"><i class="fas fa-boxes"></i> المنتجات</a></li>
+                        <li><a href="sales.html"><i class="fas fa-file-invoice"></i> المبيعات</a></li>
+                        <li><a href="customers.html"><i class="fas fa-users"></i> العملاء</a></li>
+                        <li><a href="settings.html" class="active"><i class="fas fa-cog"></i> الإعدادات</a></li>
+                    </ul>
+                </nav>
+                <div class="logout-btn">
+                    <a href="index.html" id="logoutLink"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                </div>
+            </aside>
+
+            <!-- المحتوى الرئيسي -->
+            <main class="main-content">
+                <div class="main-header">
+                    <h2><i class="fas fa-chart-line"></i> التقارير والإعدادات</h2>
+                    <button class="btn btn-outline" id="refreshReportsBtn">
+                        <i class="fas fa-sync-alt"></i> تحديث البيانات
+                    </button>
+                </div>
+
+                <div class="tab-switch">
+                    <button class="active" data-tab="reports"><i class="fas fa-chart-bar"></i> التقارير</button>
+                    <button data-tab="settings"><i class="fas fa-sliders-h"></i> الإعدادات</button>
+                </div>
+
+                <!-- تبويب التقارير -->
+                <div id="tab-reports" class="tab-content active">
+                    <div class="reports-grid" id="reportsGrid">
+                        <div class="report-card">
+                            <div class="report-icon"><i class="fas fa-coins"></i></div>
+                            <div class="report-number" id="totalSales">0</div>
+                            <div class="report-label">إجمالي المبيعات (ر.س)</div>
+                            <span class="report-change up"><i class="fas fa-arrow-up"></i> +12.5%</span>
+                        </div>
+                        <div class="report-card">
+                            <div class="report-icon"><i class="fas fa-wallet"></i></div>
+                            <div class="report-number" id="totalProfit">0</div>
+                            <div class="report-label">إجمالي الأرباح (ر.س)</div>
+                            <span class="report-change up"><i class="fas fa-arrow-up"></i> +8.3%</span>
+                        </div>
+                        <div class="report-card">
+                            <div class="report-icon"><i class="fas fa-fire"></i></div>
+                            <div class="report-number" id="topProduct">-</div>
+                            <div class="report-label">أكثر المنتجات مبيعاً</div>
+                            <span class="report-change up" id="topProductQty">0 قطعة</span>
+                        </div>
+                        <div class="report-card">
+                            <div class="report-icon"><i class="fas fa-arrows-alt-h"></i></div>
+                            <div class="report-number" id="stockMovement">0</div>
+                            <div class="report-label">حركة المخزون (شهر)</div>
+                            <span class="report-change down"><i class="fas fa-arrow-down"></i> -5.2%</span>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3><i class="fas fa-chart-simple"></i> المبيعات الشهرية</h3>
+                        <div class="bar-chart" id="monthlyChart">
+                            <div class="bar-item">
+                                <div class="bar-value">3,200</div>
+                                <div class="bar" style="height:65px;"></div>
+                                <div class="bar-label">يناير</div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-value">4,100</div>
+                                <div class="bar" style="height:85px;"></div>
+                                <div class="bar-label">فبراير</div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-value">3,800</div>
+                                <div class="bar" style="height:78px;"></div>
+                                <div class="bar-label">مارس</div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-value">5,200</div>
+                                <div class="bar" style="height:108px;"></div>
+                                <div class="bar-label">أبريل</div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-value">4,900</div>
+                                <div class="bar" style="height:100px;"></div>
+                                <div class="bar-label">مايو</div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-value">6,800</div>
+                                <div class="bar" style="height:140px;"></div>
+                                <div class="bar-label">يونيو</div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-value">7,200</div>
+                                <div class="bar" style="height:150px;"></div>
+                                <div class="bar-label">يوليو</div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-value">5,600</div>
+                                <div class="bar" style="height:115px;"></div>
+                                <div class="bar-label">أغسطس</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <h3 style="color:#e6dccf; font-weight:300; font-size:18px; margin-bottom:14px; display:flex; align-items:center; gap:12px;">
+                            <i class="fas fa-star" style="color:#c9a84c;"></i> أكثر المنتجات مبيعاً
+                        </h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>المنتج</th>
+                                    <th>النوع</th>
+                                    <th>الكمية المباعة</th>
+                                    <th>الإيرادات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topProductsBody">
+                                <!-- يتم تعبئتها عبر JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- تبويب الإعدادات -->
+                <div id="tab-settings" class="tab-content">
+                    <div class="settings-section">
+                        <h3><i class="fas fa-store"></i> إعدادات المحل</h3>
+                        <form id="settingsForm">
+                            <div class="settings-grid">
+                                <div class="settings-group">
+                                    <label>اسم المحل</label>
+                                    <input type="text" id="shopName" />
+                                </div>
+                                <div class="settings-group">
+                                    <label>رقم الهاتف</label>
+                                    <input type="text" id="shopPhone" />
+                                </div>
+                                <div class="settings-group">
+                                    <label>البريد الإلكتروني</label>
+                                    <input type="email" id="shopEmail" />
+                                </div>
+                                <div class="settings-group full">
+                                    <label>عنوان المحل</label>
+                                    <input type="text" id="shopAddress" />
+                                </div>
+                            </div>
+                            <div class="settings-actions">
+                                <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> حفظ الإعدادات</button>
+                                <button type="button" class="btn btn-secondary" id="resetSettingsBtn">إعادة تعيين</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="settings-section" style="margin-top:28px;">
+                        <h3><i class="fas fa-users-cog"></i> إدارة المستخدمين</h3>
+                        <div style="display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
+                            <button class="btn btn-gold" id="addUserBtn"><i class="fas fa-user-plus"></i> إضافة مستخدم</button>
+                        </div>
+                        <div class="user-list" id="userList">
+                            <div class="user-item">
+                                <div class="user-info">
+                                    <i class="fas fa-user-cog"></i>
+                                    <div>
+                                        <span><strong>admin</strong></span>
+                                        <div class="user-role">مدير النظام</div>
+                                    </div>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn-sm edit"><i class="fas fa-pen"></i> تعديل</button>
+                                    <button class="btn-sm delete"><i class="fas fa-trash"></i> حذف</button>
+                                </div>
+                            </div>
+                            <div class="user-item">
+                                <div class="user-info">
+                                    <i class="fas fa-user-tie"></i>
+                                    <div>
+                                        <span><strong>manager</strong></span>
+                                        <div class="user-role">مدير المحل</div>
+                                    </div>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn-sm edit"><i class="fas fa-pen"></i> تعديل</button>
+                                    <button class="btn-sm delete"><i class="fas fa-trash"></i> حذف</button>
+                                </div>
+                            </div>
+                            <div class="user-item">
+                                <div class="user-info">
+                                    <i class="fas fa-user"></i>
+                                    <div>
+                                        <span><strong>seller</strong></span>
+                                        <div class="user-role">موظف مبيعات</div>
+                                    </div>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn-sm edit"><i class="fas fa-pen"></i> تعديل</button>
+                                    <button class="btn-sm delete"><i class="fas fa-trash"></i> حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section" style="margin-top:28px;">
+                        <h3><i class="fas fa-file-invoice"></i> تعديل بيانات الفواتير</h3>
+                        <form id="invoiceSettingsForm">
+                            <div class="settings-grid">
+                                <div class="settings-group">
+                                    <label>بادئة رقم الفاتورة</label>
+                                    <input type="text" id="invoicePrefix" />
+                                </div>
+                                <div class="settings-group">
+                                    <label>الرقم التالي للفاتورة</label>
+                                    <input type="number" id="invoiceNextNum" min="1" />
+                                </div>
+                                <div class="settings-group">
+                                    <label>ضريبة القيمة المضافة (%)</label>
+                                    <input type="number" id="taxRate" min="0" max="100" />
+                                </div>
+                                <div class="settings-group">
+                                    <label>عملة الفاتورة</label>
+                                    <select id="invoiceCurrency">
+                                        <option value="ر.س">ريال سعودي (ر.س)</option>
+                                        <option value="$">دولار أمريكي ($)</option>
+                                        <option value="€">يورو (€)</option>
+                                    </select>
+                                </div>
+                                <div class="settings-group full">
+                                    <label>ملاحظات الفاتورة</label>
+                                    <input type="text" id="invoiceNote" />
+                                </div>
+                            </div>
+                            <div class="settings-actions">
+                                <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> حفظ الإعدادات</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- مودال إضافة مستخدم -->
+    <div class="modal-overlay" id="addUserModal">
+        <div class="modal-box">
+            <h3>
+                <i class="fas fa-user-plus"></i>
+                <span>إضافة مستخدم جديد</span>
+                <button class="modal-close" id="closeUserModal">&times;</button>
+            </h3>
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label>اسم المستخدم</label>
+                    <input type="text" id="newUsername" placeholder="أدخل اسم المستخدم" required />
+                </div>
+                <div class="form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="newPassword" placeholder="أدخل كلمة المرور" required />
+                </div>
+                <div class="form-group">
+                    <label>الدور</label>
+                    <select id="newUserRole">
+                        <option value="مدير النظام">مدير النظام</option>
+                        <option value="مدير المحل">مدير المحل</option>
+                        <option value="موظف مبيعات">موظف مبيعات</option>
+                        <option value="متدرب">متدرب</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelUserBtn">إلغاء</button>
+                    <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> إضافة</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  دوال localStorage
+        // ============================================================
+
+        function getSales() {
+            return JSON.parse(localStorage.getItem('sales')) || [];
+        }
+
+        function getProducts() {
+            return JSON.parse(localStorage.getItem('products')) || [];
+        }
+
+        function getSettings() {
+            return JSON.parse(localStorage.getItem('settings')) || {
+                shopName: 'أزياء الذهب',
+                shopPhone: '+966 55 123 4567',
+                shopEmail: 'info@azya-aldahab.com',
+                shopAddress: 'الرياض - حي العليا - شارع الأمير محمد بن عبدالعزيز',
+                invoicePrefix: 'INV-2026-',
+                invoiceNextNum: 4,
+                taxRate: 15,
+                invoiceCurrency: 'ر.س',
+                invoiceNote: 'شكراً لتسوقكم من أزياء الذهب'
+            };
+        }
+
+        function saveSettings(settings) {
+            localStorage.setItem('settings', JSON.stringify(settings));
+        }
+
+        // ============================================================
+        //  عناصر DOM
+        // ============================================================
+
+        const tabButtons = document.querySelectorAll('.tab-switch button');
+        const tabContents = {
+            reports: document.getElementById('tab-reports'),
+            settings: document.getElementById('tab-settings')
+        };
+
+        const refreshBtn = document.getElementById('refreshReportsBtn');
+        const addUserBtn = document.getElementById('addUserBtn');
+
+        // مودال المستخدم
+        const userModal = document.getElementById('addUserModal');
+        const closeUserModal = document.getElementById('closeUserModal');
+        const cancelUserBtn = document.getElementById('cancelUserBtn');
+        const addUserForm = document.getElementById('addUserForm');
+
+        // إعدادات
+        const settingsForm = document.getElementById('settingsForm');
+        const resetSettingsBtn = document.getElementById('resetSettingsBtn');
+        const invoiceSettingsForm = document.getElementById('invoiceSettingsForm');
+
+        // ============================================================
+        //  دوال التقارير
+        // ============================================================
+
+        function updateReports() {
+            const sales = getSales();
+            const products = getProducts();
+
+            // إجمالي المبيعات
+            const totalSales = sales.reduce((sum, s) => sum + s.total, 0);
+            document.getElementById('totalSales').textContent = totalSales.toFixed(0);
+
+            // إجمالي الأرباح (محاكاة - 40% من المبيعات)
+            const totalProfit = totalSales * 0.4;
+            document.getElementById('totalProfit').textContent = totalProfit.toFixed(0);
+
+            // أكثر منتج مبيعاً
+            const productSales = {};
+            sales.forEach(s => {
+                s.items.forEach(item => {
+                    if (productSales[item.name]) {
+                        productSales[item.name] += item.qty;
+                    } else {
+                        productSales[item.name] = item.qty;
+                    }
+                });
+            });
+
+            let topProduct = '-';
+            let topQty = 0;
+            for (const [name, qty] of Object.entries(productSales)) {
+                if (qty > topQty) {
+                    topQty = qty;
+                    topProduct = name;
+                }
+            }
+            document.getElementById('topProduct').textContent = topProduct;
+            document.getElementById('topProductQty').textContent = `${topQty} قطعة`;
+
+            // حركة المخزون (محاكاة - مجموع الكميات المباعة)
+            const totalSold = sales.reduce((sum, s) => {
+                return sum + s.items.reduce((acc, item) => acc + item.qty, 0);
+            }, 0);
+            document.getElementById('stockMovement').textContent = totalSold;
+
+            // عرض أكثر المنتجات مبيعاً في الجدول
+            const topProductsBody = document.getElementById('topProductsBody');
+            const sorted = Object.entries(productSales).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+            if (sorted.length === 0) {
+                topProductsBody.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding:20px; color:#8f877c;">
+                                لا توجد مبيعات حتى الآن
+                            </td>
+                        </tr>
+                    `;
+            } else {
+                let html = '';
+                sorted.forEach(([name, qty], index) => {
+                    const product = products.find(p => p.name === name);
+                    const revenue = product ? product.price * qty : 0;
+                    html += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td><strong>${name}</strong></td>
+                                <td>${product ? product.type : 'غير محدد'}</td>
+                                <td>${qty}</td>
+                                <td>${revenue.toFixed(0)} ر.س</td>
+                            </tr>
+                        `;
+                });
+                topProductsBody.innerHTML = html;
+            }
+        }
+
+        // ============================================================
+        //  دوال الإعدادات
+        // ============================================================
+
+        function loadSettings() {
+            const settings = getSettings();
+            document.getElementById('shopName').value = settings.shopName || '';
+            document.getElementById('shopPhone').value = settings.shopPhone || '';
+            document.getElementById('shopEmail').value = settings.shopEmail || '';
+            document.getElementById('shopAddress').value = settings.shopAddress || '';
+            document.getElementById('invoicePrefix').value = settings.invoicePrefix || 'INV-2026-';
+            document.getElementById('invoiceNextNum').value = settings.invoiceNextNum || 4;
+            document.getElementById('taxRate').value = settings.taxRate || 15;
+            document.getElementById('invoiceCurrency').value = settings.invoiceCurrency || 'ر.س';
+            document.getElementById('invoiceNote').value = settings.invoiceNote || 'شكراً لتسوقكم من أزياء الذهب';
+        }
+
+        function saveSettingsData(e) {
+            e.preventDefault();
+            const settings = {
+                shopName: document.getElementById('shopName').value.trim(),
+                shopPhone: document.getElementById('shopPhone').value.trim(),
+                shopEmail: document.getElementById('shopEmail').value.trim(),
+                shopAddress: document.getElementById('shopAddress').value.trim(),
+                invoicePrefix: document.getElementById('invoicePrefix').value.trim(),
+                invoiceNextNum: parseInt(document.getElementById('invoiceNextNum').value) || 4,
+                taxRate: parseFloat(document.getElementById('taxRate').value) || 15,
+                invoiceCurrency: document.getElementById('invoiceCurrency').value,
+                invoiceNote: document.getElementById('invoiceNote').value.trim()
+            };
+            saveSettings(settings);
+            alert('✅ تم حفظ الإعدادات بنجاح!');
+        }
+
+        function resetSettings() {
+            const defaultSettings = {
+                shopName: 'أزياء الذهب',
+                shopPhone: '+966 55 123 4567',
+                shopEmail: 'info@azya-aldahab.com',
+                shopAddress: 'الرياض - حي العليا - شارع الأمير محمد بن عبدالعزيز',
+                invoicePrefix: 'INV-2026-',
+                invoiceNextNum: 4,
+                taxRate: 15,
+                invoiceCurrency: 'ر.س',
+                invoiceNote: 'شكراً لتسوقكم من أزياء الذهب'
+            };
+            saveSettings(defaultSettings);
+            loadSettings();
+            alert('✅ تم إعادة تعيين الإعدادات إلى القيم الافتراضية.');
+        }
+
+        // ============================================================
+        //  التبويبات
+        // ============================================================
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                Object.values(tabContents).forEach(content => content.classList.remove('active'));
+
+                const tab = this.dataset.tab;
+                tabContents[tab].classList.add('active');
+
+                if (tab === 'reports') {
+                    updateReports();
+                }
+            });
+        });
+
+        // ============================================================
+        //  ربط الأحداث
+        // ============================================================
+
+        refreshBtn.addEventListener('click', updateReports);
+
+        settingsForm.addEventListener('submit', saveSettingsData);
+        resetSettingsBtn.addEventListener('click', resetSettings);
+
+        invoiceSettingsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const settings = getSettings();
+            settings.invoicePrefix = document.getElementById('invoicePrefix').value.trim();
+            settings.invoiceNextNum = parseInt(document.getElementById('invoiceNextNum').value) || 4;
+            settings.taxRate = parseFloat(document.getElementById('taxRate').value) || 15;
+            settings.invoiceCurrency = document.getElementById('invoiceCurrency').value;
+            settings.invoiceNote = document.getElementById('invoiceNote').value.trim();
+            saveSettings(settings);
+            alert('✅ تم حفظ إعدادات الفواتير بنجاح!');
+        });
+
+        // مودال المستخدم
+        addUserBtn.addEventListener('click', () => userModal.classList.add('active'));
+        closeUserModal.addEventListener('click', () => userModal.classList.remove('active'));
+        cancelUserBtn.addEventListener('click', () => userModal.classList.remove('active'));
+        userModal.addEventListener('click', (e) => {
+            if (e.target === userModal) userModal.classList.remove('active');
+        });
+
+        addUserForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value.trim();
+            const role = document.getElementById('newUserRole').value;
+
+            if (!username || !password) {
+                alert('الرجاء إدخال اسم المستخدم وكلمة المرور.');
+                return;
+            }
+
+            // إضافة مستخدم جديد (محاكاة)
+            const userList = document.getElementById('userList');
+            const userItem = document.createElement('div');
+            userItem.className = 'user-item';
+            const iconMap = {
+                'مدير النظام': 'fa-user-cog',
+                'مدير المحل': 'fa-user-tie',
+                'موظف مبيعات': 'fa-user',
+                'متدرب': 'fa-user-graduate'
+            };
+            userItem.innerHTML = `
+                    <div class="user-info">
+                        <i class="fas ${iconMap[role] || 'fa-user'}"></i>
+                        <div>
+                            <span><strong>${username}</strong></span>
+                            <div class="user-role">${role}</div>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <button class="btn-sm edit"><i class="fas fa-pen"></i> تعديل</button>
+                        <button class="btn-sm delete"><i class="fas fa-trash"></i> حذف</button>
+                    </div>
+                `;
+            userList.appendChild(userItem);
+
+            // ربط أحداث الحذف للمستخدم الجديد
+            userItem.querySelector('.delete').addEventListener('click', function() {
+                if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
+                    userItem.remove();
+                }
+            });
+
+            userModal.classList.remove('active');
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            alert(`✅ تم إضافة المستخدم "${username}" بنجاح!`);
+        });
+
+        // ربط أحداث الحذف للمستخدمين الموجودين
+        document.querySelectorAll('.user-item .delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
+                    this.closest('.user-item').remove();
+                }
+            });
+        });
+
+        document.getElementById('logoutLink').addEventListener('click', function(e) {
+            localStorage.removeItem('loggedIn');
+            localStorage.removeItem('currentUser');
+        });
+
+        // ============================================================
+        //  التحقق من الدخول
+        // ============================================================
+
+        function checkAuth() {
+            if (localStorage.getItem('loggedIn') !== 'true') {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // ============================================================
+        //  التهيئة
+        // ============================================================
+
+        checkAuth();
+        updateReports();
+        loadSettings();
+        console.log('✅ صفحة التقارير والإعدادات جاهزة مع localStorage');
+    </script>
+
+</body>
+</html>
